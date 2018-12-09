@@ -1,13 +1,8 @@
 package com.women.online.shop.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
@@ -16,6 +11,9 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
+@Table(name = "user_orders")
 public class UserOrder extends AbstractEntity {
     @ManyToMany(
             mappedBy = "userOrders",

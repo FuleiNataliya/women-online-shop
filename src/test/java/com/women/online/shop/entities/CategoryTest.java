@@ -21,12 +21,12 @@ public class CategoryTest {
     }
 
     @Test(expected = CategoryNotFoundException.class)
-    public void getByNameShouldReturnCategoryNotFoundException(){
+    public void getByNameShouldReturnCategoryNotFoundException() {
         Category.getByName("pink");
     }
 
     @Test(expected = CategoryNotFoundException.class)
-    public void getByNumberShouldReturnCategoryNotFoundException(){
+    public void getByNumberShouldReturnCategoryNotFoundException() {
         Category.getByNumber(111);
     }
 }

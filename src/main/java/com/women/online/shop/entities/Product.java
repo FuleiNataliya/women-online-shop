@@ -1,8 +1,6 @@
 package com.women.online.shop.entities;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -15,6 +13,9 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@ToString
+@EqualsAndHashCode
+@Table(name = "products")
 public class Product extends AbstractEntity {
     @Column(name = "name")
     private String name;
@@ -23,9 +24,11 @@ public class Product extends AbstractEntity {
     private Country country;
     @ElementCollection(targetClass = Category.class)
     @Enumerated(EnumType.STRING)
+    @Column(name = "category")
     private Set<Category> categories = new HashSet<>();
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "products_customs")
+    @JoinTable(name = "product_user_orders"
+    )
     private List<UserOrder> userOrders = new ArrayList<>();
 
     public Product(String name, BigDecimal price, Country country, Set<Category> categories) {
@@ -33,6 +36,13 @@ public class Product extends AbstractEntity {
         this.setPrice(price);
         this.setCountry(country);
         this.categories.addAll(categories);
+    }
+
+    public Product(String name, BigDecimal price, Country country) {
+
+        this.name = name;
+        this.price = price;
+        this.country = country;
     }
 
     public void removeCategories(Category category) {
