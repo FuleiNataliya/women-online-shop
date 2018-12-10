@@ -1,4 +1,3 @@
-
 package com.women.online.shop.controllers;
 
 import com.women.online.shop.controllers.dto.ProductDto;
@@ -6,13 +5,17 @@ import com.women.online.shop.entities.Product;
 import com.women.online.shop.repositoties.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
+import javax.annotation.PostConstruct;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 public class ProductController {
+
     private final ProductRepository productRepository;
 
     public ProductController(@Autowired ProductRepository productRepository) {
@@ -21,8 +24,7 @@ public class ProductController {
 
     @PostMapping("/products")
     public void create(@RequestBody ProductDto productDto) {
-        final Product product = new Product(productDto.getName(), productDto.getPrice(),
-                productDto.getCountry());
+        final Product product = new Product(productDto.getName());
         productRepository.save(product);
     }
 
@@ -32,14 +34,8 @@ public class ProductController {
         return ResponseEntity.ok(all);
     }
 
-    @GetMapping("/products/{id}")
-    public ResponseEntity<Optional<Product>> findById(@PathVariable String id) {
-        final Optional<Product> product = productRepository.findById(id);
-        return ResponseEntity.ok(product);
-    }
-
-    @DeleteMapping("/products/{id}")
-    public void delete(@PathVariable String id) {
-        productRepository.deleteById(id);
+    @PostConstruct
+    public void postConstract() {
+        System.out.println("PostConstruct");
     }
 }
