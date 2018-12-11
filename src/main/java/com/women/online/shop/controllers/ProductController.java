@@ -31,28 +31,10 @@ public class ProductController {
 
     @GetMapping("/products")
     public ResponseEntity<List<ProductDtoWithId>> getProducts() {
-        // final List<Product> allProducts = productRepository.findAll();
-        List<ProductDtoWithId> all = new ArrayList<>();
-       // allProducts.stream().map(ProductMapper :: toProductDto).forEach(productDtoWithId -> all.add(productDtoWithId));
+        final List<ProductDtoWithId> all = new ArrayList<>();
         productRepository.findAll().stream().map(ProductMapper :: toProductDto).forEach(all :: add);
-//        List<ProductDtoWithId> all = new ArrayList<>();
-//        for (Product product : allProducts) {
-//            ProductDtoWithId productDto = ProductMapper.toProductDto(product);
-//            all.add(productDto);
-//        }
         return ResponseEntity.ok(all);
     }
-
-    /*
-    public ResponseEntity<User> getUser(@PathVariable Long id) {
-    return Optional
-            .ofNullable( userRepository.findOne(id) )
-            .map( user -> ResponseEntity.ok().body(user) )          //200 OK
-            .orElseGet( () -> ResponseEntity.notFound().build() );  //404 Not found
-}
-     */
-
-
 
     @GetMapping("/products/{id}")
     public ResponseEntity<ProductDtoWithId> findById(@PathVariable String id) {
