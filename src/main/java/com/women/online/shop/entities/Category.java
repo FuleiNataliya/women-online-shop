@@ -21,7 +21,7 @@ public enum Category {
         this.shortName = shortName;
     }
 
-    public static Category getByNumber(int number) {
+   public static Category getByNumber(int number) {
         return Arrays.stream(values())
                 .filter(category -> category.number == number)
                 .findFirst()

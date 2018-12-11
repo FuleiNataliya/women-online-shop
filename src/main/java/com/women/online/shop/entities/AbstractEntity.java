@@ -1,16 +1,18 @@
 package com.women.online.shop.entities;
 
-import java.util.UUID;
+import javax.persistence.Id;
+import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
-
+import java.util.UUID;
+@MappedSuperclass
 public abstract class AbstractEntity {
+    @Id
     private String id;
     private LocalDateTime createdAt;
 
     public AbstractEntity() {
-        this.setId(UUID.randomUUID( ).toString( ));
-        this.setCreatedAt(LocalDateTime.now( ));
-
+        this.setId(UUID.randomUUID().toString());
+        this.setCreatedAt(LocalDateTime.now());
     }
 
     public String getId() {
