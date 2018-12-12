@@ -10,9 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 public class ProductController {
@@ -31,8 +31,8 @@ public class ProductController {
 
     @GetMapping("/products")
     public ResponseEntity<List<ProductDtoWithId>> getProducts() {
-        final List<ProductDtoWithId> all = new ArrayList<>();
-        productRepository.findAll().stream().map(ProductMapper :: toProductDto).forEach(all :: add);
+        final List<ProductDtoWithId> all = productRepository.findAll().
+                stream().map(ProductMapper :: toProductDto).collect(Collectors.toList());
         return ResponseEntity.ok(all);
     }
 
