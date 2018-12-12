@@ -38,6 +38,13 @@ public class Product extends AbstractEntity {
         this.categories.addAll(categories);
     }
 
+    public Product(String name, BigDecimal price, Country country) {
+
+        this.name = name;
+        this.price = price;
+        this.country = country;
+    }
+
     public void removeCategories(Category category) {
         if (categories.size() > 1) {
             categories.remove(category);
