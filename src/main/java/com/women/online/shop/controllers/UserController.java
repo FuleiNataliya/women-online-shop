@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Function;
 
 @RestController
 public class UserController {
@@ -39,10 +40,11 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity<Optional<User>> getUser(@PathVariable String id) {
+    public ResponseEntity<UserDto> getUser(@PathVariable String id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
-            return ResponseEntity.ok(user);
+            UserDto userDto = UserMapper.convertToDto(user.get());
+            return ResponseEntity.ok(userDto);
         } else {
             return ResponseEntity.notFound().build();
         }
@@ -53,9 +55,9 @@ public class UserController {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             userRepository.deleteById(id);
-            return new ResponseEntity<>(HttpStatus.OK);
+            return ResponseEntity.ok().build();
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 }
