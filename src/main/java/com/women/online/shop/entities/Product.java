@@ -1,4 +1,5 @@
 package com.women.online.shop.entities;
+
 import lombok.*;
 
 import javax.persistence.*;
@@ -30,7 +31,15 @@ public class Product extends AbstractEntity {
     )
     private List<UserOrder> userOrders = new ArrayList<>();
 
+    public Product(String name, BigDecimal price, Country country, Set<Category> categories) {
+        this.setName(name);
+        this.setPrice(price);
+        this.setCountry(country);
+        this.categories.addAll(categories);
+    }
+
     public Product(String name, BigDecimal price, Country country) {
+
         this.name = name;
         this.price = price;
         this.country = country;
@@ -42,3 +51,5 @@ public class Product extends AbstractEntity {
         }
     }
 }
+
+

@@ -31,9 +31,9 @@ public class UserOrder extends AbstractEntity{
         this.amount = amount;
         this.city = city;
     }
-    public UserOrder(User user, /*<Product> products,*/ String city) {
+    public UserOrder(User user, Set<Product> products, String city) {
        this.user = user;
-      // this.products=products;
+       this.products=products;
        this.city = city;
     }
     public void addProduct(Product product) {
