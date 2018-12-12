@@ -10,6 +10,7 @@ public class UserMapper {
         UserDto userDto = new UserDto();
         userDto.setFirstName(user.getName().getFirstName());
         userDto.setLastName(user.getName().getLastName());
+        userDto.setEmail(user.getEmail());
         userDto.setCountry(user.getAddress().getCountry());
         userDto.setCity(user.getAddress().getCity());
         userDto.setStreet(user.getAddress().getStreet());
@@ -20,12 +21,19 @@ public class UserMapper {
 
     public static User convertToEntity(UserDto userDto) {
         User user = new User();
-        user.setName(new Name(userDto.getFirstName(), null, userDto.getLastName()));
-        user.setAddress(
-                new Address(
-                        userDto.getCountry(), userDto.getCity(), userDto.getStreet(),
-                        userDto.getHomeNumber(), userDto.getApartment())
-        );
+        Name name = new Name();
+        name.setFirstName(userDto.getFirstName());
+        name.setMiddleName(null);
+        name.setLastName(userDto.getLastName());
+        Address address = new Address();
+        address.setCountry(userDto.getCountry());
+        address.setCity(userDto.getCity());
+        address.setStreet(userDto.getStreet());
+        address.setHomeNumber(userDto.getHomeNumber());
+        address.setApartment(userDto.getApartment());
+        user.setName(name);
+        user.setEmail(userDto.getEmail());
+        user.setAddress(address);
         return user;
     }
 }

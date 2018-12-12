@@ -25,15 +25,16 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> create(@RequestBody UserDto userDto) {
-        User user = UserMapper.convertToEntity(userDto);
+    public ResponseEntity<UserDto> create(@RequestBody UserDto dto) {
+        User user = UserMapper.convertToEntity(dto);
         userRepository.save(user);
-        return new ResponseEntity<>(user, HttpStatus.CREATED);
+        UserDto userDto = UserMapper.convertToDto(user);
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 
     @GetMapping("/users")
     public ResponseEntity<List<User>> getUsers() {
-        final List<User> users = userRepository.findAll();
+        List<User> users = userRepository.findAll();
         return ResponseEntity.ok(users);
     }
 
@@ -43,12 +44,12 @@ public class UserController {
         if (user.isPresent()) {
             return ResponseEntity.ok(user);
         } else {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return ResponseEntity.notFound().build();
         }
     }
 
     @DeleteMapping("/users/{id}")
-    public ResponseEntity<User> delete(@PathVariable String id) {
+    public ResponseEntity delete(@PathVariable String id) {
         Optional<User> user = userRepository.findById(id);
         if (user.isPresent()) {
             userRepository.deleteById(id);
