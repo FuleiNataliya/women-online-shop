@@ -40,8 +40,8 @@ public class User extends AbstractEntity {
     this.phones = phones;
   }
 
-  public User(Name name, String email) {
-    this(name, email, null, null, null);
+  public User(Name name, String email, Address address) {
+    this(name, email, null, address, null);
   }
 
   public void addCategory(Category category) {

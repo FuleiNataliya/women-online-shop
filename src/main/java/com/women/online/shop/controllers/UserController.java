@@ -1,45 +1,63 @@
 package com.women.online.shop.controllers;
 
 import com.women.online.shop.controllers.dto.UserDto;
+import com.women.online.shop.controllers.mappers.UserMapper;
+import com.women.online.shop.entities.Address;
 import com.women.online.shop.entities.Name;
 import com.women.online.shop.entities.User;
 import com.women.online.shop.repositoties.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
 
 @RestController
 public class UserController {
 
-  private final UserRepository userRepository;
+    private final UserRepository userRepository;
 
-  public UserController(@Autowired UserRepository userRepository) {
-    this.userRepository = userRepository;
-  }
+    public UserController(@Autowired UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-  @PostMapping("/users")
-  public void create(@RequestBody UserDto userDto) {
-    final User user =
-        new User(new Name(userDto.getFirstName(), null, userDto.getLastName()), userDto.getEmail());
-    userRepository.save(user);
-  }
+    @PostMapping("/users")
+    public ResponseEntity<UserDto> create(@RequestBody UserDto dto) {
+        User user = UserMapper.convertToEntity(dto);
+        userRepository.save(user);
+        UserDto userDto = UserMapper.convertToDto(user);
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
+    }
 
-  @GetMapping("/users")
-  public ResponseEntity<List<User>> getUsers() {
-    final List<User> all = userRepository.findAll();
-    return ResponseEntity.ok(all);
-  }
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getUsers() {
+        List<User> users = userRepository.findAll();
+        return ResponseEntity.ok(users);
+    }
 
-  // todo add Adress to user, User getByID, delete; Product, UserOrder;
+    @GetMapping("/users/{id}")
+    public ResponseEntity<UserDto> getUser(@PathVariable String id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            UserDto userDto = UserMapper.convertToDto(user.get());
+            return ResponseEntity.ok(userDto);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 
-  @PostConstruct
-  public void postConstract() {
-    System.out.println("PostConstruct");
-  }
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity delete(@PathVariable String id) {
+        Optional<User> user = userRepository.findById(id);
+        if (user.isPresent()) {
+            userRepository.deleteById(id);
+            return ResponseEntity.ok().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
