@@ -8,6 +8,7 @@ import com.women.online.shop.entities.User;
 public class UserMapper {
     public static UserDto convertToDto(User user) {
         UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
         userDto.setFirstName(user.getName().getFirstName());
         userDto.setLastName(user.getName().getLastName());
         userDto.setEmail(user.getEmail());
