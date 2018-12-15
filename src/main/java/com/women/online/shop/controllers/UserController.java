@@ -15,6 +15,7 @@ import javax.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @RestController
 public class UserController {
@@ -34,8 +35,11 @@ public class UserController {
     }
 
     @GetMapping("/users")
-    public ResponseEntity<List<User>> getUsers() {
-        List<User> users = userRepository.findAll();
+    public ResponseEntity<List<UserDto>> getUsers() {
+        List<UserDto> users = userRepository.findAll()
+                .stream()
+                .map(UserMapper::convertToDto)
+                .collect(Collectors.toList());
         return ResponseEntity.ok(users);
     }
 
