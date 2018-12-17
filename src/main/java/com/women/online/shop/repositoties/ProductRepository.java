@@ -7,4 +7,3 @@ public interface ProductRepository extends JpaRepository<Product, String> {
 
     Product findByCategories(String shortName);
 }
-
